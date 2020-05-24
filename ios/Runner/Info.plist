@@ -41,5 +41,52 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRPole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Copied from GoogleServices-Info.plist key REVERSED_CLIENT_ID -->
+				<string>com.googleusercontent.apps.434850524499-u96gnameedf7dm0fi5u5tt5inb9616lf</string>
+				
+				<string>fb892825494474810</string>
+			</array>
+
+		</dict>
+	</array>
+	<!-- End of the Google Sign-in Section -->
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose an avatar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Choose an avatar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Not used</string>
+
+<key>LSApplicationQueriesSchemes</key> 
+<array> 
+<string>fbapi</string> 
+<string>fbapi20130214</string> 
+<string>fbapi20130410</string> 
+<string>fbapi20130702</string> 
+<string>fbapi20131010</string> 
+<string>fbapi20131219</string> 
+<string>fbapi20140410</string> 
+<string>fbapi20140116</string> 
+<string>fbapi20150313</string> 
+<string>fbapi20150629</string> 
+<string>fbapi20160328</string> 
+<string>fbauth</string> 
+<string>fb-messenger-share-api</string> 
+<string>fbauth2</string> <string>fbshareextension</string> 
+</array>
+ <key>FacebookAppID</key> 
+  <string>892825494474810</string> 
+  <key>FacebookDisplayName</key> 
+  <string>meal nation</string>
 </dict>
 </plist>
