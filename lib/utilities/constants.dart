@@ -1,0 +1,1 @@
+const searchLimit = 10;
