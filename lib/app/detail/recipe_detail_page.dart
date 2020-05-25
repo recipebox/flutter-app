@@ -8,9 +8,15 @@ import 'recipe_ingredient_tile.dart';
 class RecipeDetail extends StatelessWidget {
   final RecipeDetailModel recipeDetail;
   final PlanRecipeService planRecipeService;
+  final String uid;
   final String planID;
+  final String recipeID;
   RecipeDetail(
-      {@required this.recipeDetail, this.planRecipeService, this.planID});
+      {@required this.recipeDetail,
+      this.planRecipeService,
+      this.planID,
+      this.uid,
+      this.recipeID});
 
   @override
   Widget build(BuildContext context) {
@@ -50,35 +56,43 @@ class RecipeDetail extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 5.0,
+                    bottom: 0.0,
                     right: 30.0,
                     child: recipeDetail.status != ''
                         ? RawMaterialButton(
                             shape: CircleBorder(),
                             elevation: 0.1,
-                            fillColor: Colors.green,
+                            // fillColor: Colors.green,
                             child: Icon(
-                              Icons.check_circle,
-                              color: Colors.white,
+                              Icons.bookmark,
+                              color: Colors.green,
                               size: 40.0,
                             ),
-                            onPressed: () {
-                              //Navigator.pop(context);
-                            },
-                          )
+                            onPressed: () {})
                         : RawMaterialButton(
                             shape: CircleBorder(),
                             elevation: 0.1,
-                            fillColor: Colors.redAccent,
+                            //fillColor: Colors.redAccent,
                             child: Icon(
-                              Icons.add_circle,
-                              color: Colors.white,
+                              Icons.bookmark_border,
+                              color: Colors.black54,
                               size: 40.0,
                             ),
                             onPressed: () async {
                               await planRecipeService.addRecipe(
                                   planID, recipeDetail);
-                              Navigator.pop(context);
+                              //Navigator.pop(context);
+                              var detail = await planRecipeService
+                                  .getRecipeDetail(recipeID, uid, planID);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RecipeDetail(
+                                            recipeDetail: detail,
+                                            planID: planID,
+                                            planRecipeService:
+                                                planRecipeService,
+                                          )));
                             },
                           ),
                   )

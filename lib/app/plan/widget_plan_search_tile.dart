@@ -41,6 +41,8 @@ class PlanSearchTile extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => RecipeDetail(
                                 recipeDetail: detail,
+                                uid: planService.uid,
+                                recipeID: recipe.id,
                                 planID: planService.current.id,
                                 planRecipeService: planRecipeService,
                               )));
@@ -103,7 +105,7 @@ class PlanSearchTile extends StatelessWidget {
                   elevation: 0.1,
                   fillColor: Colors.black,
                   child: Icon(
-                    Icons.add_shopping_cart,
+                    Icons.bookmark_border,
                     color: Colors.white,
                     size: 20.0,
                   ),

@@ -87,8 +87,8 @@ class PlanHomePage extends StatelessWidget {
           label: 'Recipe',
         ),
         FFNavigationBarItem(
-          iconData: Icons.kitchen,
-          label: 'Ingredient',
+          iconData: Icons.shopping_cart,
+          label: 'Cart',
           selectedBackgroundColor: Colors.red,
         ),
       ],

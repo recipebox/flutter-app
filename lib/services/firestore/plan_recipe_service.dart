@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_box/models/plan_recipe_model.dart';
+import 'package:recipe_box/models/recipe_detail_model.dart';
 import 'package:recipe_box/models/recipe_preview_model.dart';
 import 'package:recipe_box/utilities/log.dart';
 
@@ -107,5 +108,27 @@ class PlanRecipeService {
         });
       }
     });
+  }
+
+  Future<RecipeDetailModel> getRecipeDetail(
+      String recipeID, String uid, String planID) async {
+    printT('getRecipeDetail with recipeID:$recipeID, uid:$uid, planID:$planID');
+    final recipeDoc =
+        await Firestore.instance.collection('recipes').document(recipeID).get();
+    var detail =
+        RecipeDetailModel.fromSnapshot(recipeDoc.documentID, recipeDoc.data);
+
+    final planRecipe = await Firestore.instance
+        .collection('profiles/$uid/plans/$planID/recipes')
+        .where("id", isEqualTo: recipeID)
+        .getDocuments();
+    printT('result search in plan:' + planRecipe.documents.length.toString());
+    if (planRecipe.documents.length == 0) {
+      detail.status = "";
+    } else {
+      detail.status = planRecipe.documents[0]['status'] ?? 'ADDED';
+    }
+    printT('status for this detail' + detail.status);
+    return detail;
   }
 }

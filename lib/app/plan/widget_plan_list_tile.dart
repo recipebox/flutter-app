@@ -28,6 +28,8 @@ class PlanReceipeTile extends StatelessWidget {
         MaterialPageRoute(
             builder: (context) => RecipeDetail(
                   recipeDetail: detail,
+                  uid: planService.uid,
+                  recipeID: recipeID,
                   planID: planService.current.id,
                   planRecipeService: planRecipeService,
                 )));
