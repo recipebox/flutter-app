@@ -23,13 +23,15 @@ class PlanRecipeService {
   }
 
   Future<void> addRecipe(String planID, RecipePreviewModel recipe) async {
+    printT('Adding $planID, ${recipe.id}');
     var rawRecipe =
         Firestore.instance.collection('recipes').document(recipe.id);
     List ingredientList = [];
     await rawRecipe.get().then((doc) {
       Firestore.instance
           .collection('profiles/$uid/plans/$planID/recipes')
-          .add(doc.data);
+          .document(recipe.id)
+          .setData(doc.data);
       ingredientList = doc.data['ingredients'] as List;
     }).catchError((onError) {
       printT(onError);
@@ -82,11 +84,12 @@ class PlanRecipeService {
     });
   }
 
-  void removeRecipe(String planID, String planRecipeID, String recipeID) async {
+  Future<void> removeRecipe(String planID, String recipeID) async {
     //print("UID: $uid, PlanID: $planID, planRecipeID:$planRecipeID");
+    printT('Adding $planID, $recipeID');
     await Firestore.instance
         .collection('profiles/$uid/plans/$planID/recipes')
-        .document(planRecipeID)
+        .document(recipeID)
         .delete();
     var recipes = await Firestore.instance
         .collection('profiles/$uid/plans/$planID/ingredients')

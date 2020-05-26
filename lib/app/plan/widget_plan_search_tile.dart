@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_box/app/detail/recipe_detail_page.dart';
 import 'package:recipe_box/models/recipe_preview_model.dart';
-import 'package:recipe_box/services/elastic_search/search_recipe_service.dart';
+import 'package:recipe_box/services/firestore/detail_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_service.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_box/services/navigation_bar_service.dart';
 
 class PlanSearchTile extends StatelessWidget {
   final RecipePreviewModel recipe;
@@ -15,10 +15,9 @@ class PlanSearchTile extends StatelessWidget {
     final planRecipeService =
         Provider.of<PlanRecipeService>(context, listen: false);
     final planService = Provider.of<PlanService>(context, listen: false);
-    final searchRecipeService =
-        Provider.of<SearchRecipeService>(context, listen: false);
-    print('build widget search tile with ${recipe.id}');
-    print('build widget search tile with ${recipe.title}');
+    final navigatorBar = Provider.of<BottomNavigationBarService>(context);
+    final detailService = Provider.of<DetailRecipeService>(context);
+
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
       padding: EdgeInsets.only(top: 5.0),
@@ -30,22 +29,12 @@ class PlanSearchTile extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () async {
-                  print('start to getRecipeDetail with ${recipe.id}');
-                  var detail = await searchRecipeService.getRecipeDetail(
+                  var detail = await planRecipeService.getRecipeDetail(
                       recipe.id, planService.uid, planService.current.id);
-
-                  print('detail receive with getRecipeDetail: ' +
-                      detail.toString());
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RecipeDetail(
-                                recipeDetail: detail,
-                                uid: planService.uid,
-                                recipeID: recipe.id,
-                                planID: planService.current.id,
-                                planRecipeService: planRecipeService,
-                              )));
+                  detailService.currentDetail = detail;
+                  detailService.recipeID = recipe.id;
+                  detailService.planID = planService.current.id;
+                  navigatorBar.showDetail = true;
                 },
                 child: Container(
                   width: 160.0,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_box/app/detail/recipe_detail_page.dart';
-import 'package:recipe_box/services/elastic_search/search_recipe_service.dart';
+import 'package:recipe_box/services/firestore/detail_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_service.dart';
+import 'package:recipe_box/services/navigation_bar_service.dart';
 import 'package:recipe_box/utilities/styles.dart';
 import 'package:provider/provider.dart';
 
@@ -19,30 +19,14 @@ class PlanReceipeTile extends StatelessWidget {
       @required this.title,
       @required this.description});
 
-  void gotoDetailPage(SearchRecipeService service, PlanService planService,
-      PlanRecipeService planRecipeService, BuildContext context) async {
-    var detail = await service.getRecipeDetail(
-        recipeID, planService.uid, planService.current.id);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RecipeDetail(
-                  recipeDetail: detail,
-                  uid: planService.uid,
-                  recipeID: recipeID,
-                  planID: planService.current.id,
-                  planRecipeService: planRecipeService,
-                )));
-  }
-
   @override
   Widget build(BuildContext context) {
     final planRecipeService =
         Provider.of<PlanRecipeService>(context, listen: false);
     final planService = Provider.of<PlanService>(context, listen: false);
+    final navigatorBar = Provider.of<BottomNavigationBarService>(context);
+    final detailService = Provider.of<DetailRecipeService>(context);
 
-    final searchRecipeService =
-        Provider.of<SearchRecipeService>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
@@ -53,8 +37,12 @@ class PlanReceipeTile extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () async {
-                gotoDetailPage(searchRecipeService, planService,
-                    planRecipeService, context);
+                var detail = await planRecipeService.getRecipeDetail(
+                    recipeID, planService.uid, planService.current.id);
+                detailService.currentDetail = detail;
+                detailService.recipeID = recipeID;
+                detailService.planID = planService.current.id;
+                navigatorBar.showDetail = true;
               },
               child: Container(
                 child: imgAssetPath.length > 0
@@ -72,8 +60,12 @@ class PlanReceipeTile extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                gotoDetailPage(searchRecipeService, planService,
-                    planRecipeService, context);
+                var detail = await planRecipeService.getRecipeDetail(
+                    recipeID, planService.uid, planService.current.id);
+                detailService.currentDetail = detail;
+                detailService.recipeID = recipeID;
+                detailService.planID = planService.current.id;
+                navigatorBar.showDetail = true;
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +98,7 @@ class PlanReceipeTile extends StatelessWidget {
                 onPressed: () {
                   print('try to delete');
                   planRecipeService.removeRecipe(
-                      planService.current.id, this.id, this.recipeID);
+                      planService.current.id, this.recipeID);
                 },
               ),
             )
