@@ -177,14 +177,9 @@ class RecipeDetailNewPage extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: recipeDetail.ingredients.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
-                child: RecipeIngredientTile(
-                  ingredient: recipeDetail.ingredients[index],
-                ),
-                onTap: () async {
-                  await planRecipeService.addIngredient(planID, recipeDetail,
-                      recipeDetail.ingredients[index].title);
-                },
+              return RecipeIngredientTile(
+                recipeDetail: recipeDetail,
+                ingredient: recipeDetail.ingredients[index],
               );
             },
           ),

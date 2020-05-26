@@ -198,4 +198,12 @@ class PlanRecipeService {
       }
     });
   }
+
+  Future<void> removeIngredient(String planID, String ingredientID) async {
+    printT('removeIngredient $planID, $ingredientID');
+    await Firestore.instance
+        .collection('profiles/$uid/plans/$planID/ingredients')
+        .document(ingredientID)
+        .delete();
+  }
 }
