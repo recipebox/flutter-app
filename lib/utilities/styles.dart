@@ -11,6 +11,7 @@ final sColorBody1 = Color(0xFF433D3E);
 final sColorBody2 = Color(0xFF9C9495);
 final sColorBody3 = Color(0xFFE6DBDD);
 final sColorBody4 = Color(0xffFFEEE0);
+final sColorBody5 = Color(0xff1A936F);
 
 final sColorButton1 = Color(0xFFFE3562);
 

@@ -128,7 +128,12 @@ class RecipeDetailNewPage extends StatelessWidget {
                     SizedBox(height: 20.0),
                     _buildTitle('Ingredients'),
                     SizedBox(height: 15.0),
-                    _buildIngredientPanel(context, recipeDetail),
+                    _buildIngredientPanel(
+                      context,
+                      recipeDetail,
+                      ds.planID,
+                      planRecipeService,
+                    ),
                     SizedBox(height: 15.0),
                     _buildTitle('Instructions'),
                     SizedBox(height: 15.0),
@@ -157,7 +162,10 @@ class RecipeDetailNewPage extends StatelessWidget {
   }
 
   Widget _buildIngredientPanel(
-      BuildContext context, RecipeDetailModel recipeDetail) {
+      BuildContext context,
+      RecipeDetailModel recipeDetail,
+      String planID,
+      PlanRecipeService planRecipeService) {
     return Row(
       children: <Widget>[
         Container(
@@ -169,8 +177,19 @@ class RecipeDetailNewPage extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: recipeDetail.ingredients.length,
             itemBuilder: (context, index) {
-              return RecipeIngredientTile(
-                ingredient: recipeDetail.ingredients[index],
+              return GestureDetector(
+                child: RecipeIngredientTile(
+                  ingredient: recipeDetail.ingredients[index],
+                ),
+                onTap: () async {
+                  print(
+                      'add ingredient: ${recipeDetail.ingredients[index].title.toString()}, status: ${recipeDetail.ingredients[index].status.toString()}');
+                  recipeDetail.ingredients[index].status = "ADDED";
+                  await planRecipeService.addIngredient(planID, recipeDetail,
+                      recipeDetail.ingredients[index].title);
+                  print(
+                      'add ingredient: ${recipeDetail.ingredients[index].title.toString()}, status: ${recipeDetail.ingredients[index].status.toString()}');
+                },
               );
             },
           ),

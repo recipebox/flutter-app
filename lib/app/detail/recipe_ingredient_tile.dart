@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_box/models/plan_ingredient_model.dart';
 import 'package:recipe_box/models/recipe_detail_model.dart';
+import 'package:recipe_box/services/firestore/plan_ingredient_service.dart';
+import 'package:recipe_box/services/firestore/plan_service.dart';
+import 'package:recipe_box/utilities/log.dart';
 import 'package:recipe_box/utilities/styles.dart';
+import 'package:provider/provider.dart';
 
 class RecipeIngredientTile extends StatelessWidget {
   final Ingredient ingredient;
@@ -9,6 +14,10 @@ class RecipeIngredientTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final planIngredientService =
+        Provider.of<PlanIngredientService>(context, listen: false);
+    final planService = Provider.of<PlanService>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       padding: EdgeInsets.only(top: 5.0),
@@ -42,6 +51,32 @@ class RecipeIngredientTile extends StatelessWidget {
                   ),
                 ),
               ),
+              StreamBuilder<List<PlanIngredient>>(
+                  stream: planIngredientService
+                      .streamIngredients(planService.current.id),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<PlanIngredient>> snapshot) {
+                    if (!snapshot.hasData) return new Text('...');
+                    var data = snapshot.data;
+                    bool matched = false;
+                    data.forEach((element) {
+                      if (element.title == ingredient.title) {
+                        matched = true;
+                      }
+                    });
+                    if (matched) {
+                      return Positioned(
+                        child: Icon(
+                          Icons.shopping_basket,
+                          color: sColorBody5,
+                        ),
+                        bottom: 0,
+                        right: 0,
+                      );
+                    } else {
+                      return Text('');
+                    }
+                  }),
             ],
           ),
         ],
