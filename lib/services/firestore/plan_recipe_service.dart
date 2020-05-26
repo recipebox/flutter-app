@@ -142,6 +142,10 @@ class PlanRecipeService {
         Firestore.instance.collection('recipes').document(recipe.id);
     List ingredientList = [];
     await rawRecipe.get().then((doc) {
+      Firestore.instance
+          .collection('profiles/$uid/plans/$planID/recipes')
+          .document(recipe.id)
+          .setData(doc.data);
       ingredientList = doc.data['ingredients'] as List;
     }).catchError((onError) {
       printT(onError);

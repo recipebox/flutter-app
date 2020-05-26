@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_box/models/plan_ingredient_model.dart';
 import 'package:recipe_box/models/recipe_detail_model.dart';
+import 'package:recipe_box/services/firestore/detail_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_ingredient_service.dart';
 import 'package:recipe_box/services/firestore/plan_recipe_service.dart';
 import 'package:recipe_box/services/firestore/plan_service.dart';
@@ -20,6 +21,7 @@ class RecipeIngredientTile extends StatelessWidget {
     final planService = Provider.of<PlanService>(context, listen: false);
     final planRecipeService =
         Provider.of<PlanRecipeService>(context, listen: false);
+    final detailService = Provider.of<DetailRecipeService>(context);
 
     return StreamBuilder<List<PlanIngredient>>(
         stream: planIngredientService.streamIngredients(planService.current.id),
@@ -39,14 +41,35 @@ class RecipeIngredientTile extends StatelessWidget {
             }
           });
           if (matched && done) {
-            return _buildColumn(planRecipeService, ingredient, bcDone,
-                planService.current.id, false, false, recipeDetail);
+            return _buildColumn(
+                planRecipeService,
+                ingredient,
+                bcDone,
+                planService.current.id,
+                false,
+                false,
+                recipeDetail,
+                detailService);
           } else if (matched) {
-            return _buildColumn(planRecipeService, ingredient, bcNeeded,
-                planService.current.id, true, false, recipeDetail);
+            return _buildColumn(
+                planRecipeService,
+                ingredient,
+                bcNeeded,
+                planService.current.id,
+                true,
+                false,
+                recipeDetail,
+                detailService);
           } else {
-            return _buildColumn(planRecipeService, ingredient, bcEmpty,
-                planService.current.id, false, true, recipeDetail);
+            return _buildColumn(
+                planRecipeService,
+                ingredient,
+                bcEmpty,
+                planService.current.id,
+                false,
+                true,
+                recipeDetail,
+                detailService);
           }
         });
   }
@@ -99,7 +122,8 @@ Widget _buildColumn(
     String planID,
     bool removable,
     bool addable,
-    RecipeDetailModel recipeDetail) {
+    RecipeDetailModel recipeDetail,
+    DetailRecipeService detailRecipeService) {
   return GestureDetector(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,14 +141,16 @@ Widget _buildColumn(
         ),
       ],
     ),
-    onTap: () {
+    onTap: () async {
       if (removable == true) {
         print('remove it');
         planRecipeService.removeIngredient(planID, ingredient.title);
       }
       if (addable == true) {
         print('add it');
-        planRecipeService.addIngredient(planID, recipeDetail, ingredient.title);
+        await planRecipeService.addIngredient(
+            planID, recipeDetail, ingredient.title);
+        detailRecipeService.updateCurrentDetail("ADDED");
       }
     },
   );
