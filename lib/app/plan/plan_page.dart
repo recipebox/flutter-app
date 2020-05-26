@@ -25,7 +25,7 @@ class PlanHomePage extends StatelessWidget {
         backgroundColor: sColorBody3,
         body: Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
-          child: navigatorBar.showDetail
+          child: navigatorBar.showDetail && navigatorBar.currentIndex == 0
               ? RecipeDetailNewPage()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -85,9 +85,6 @@ class PlanHomePage extends StatelessWidget {
       selectedIndex: navigatorBar.currentIndex,
       onSelectTab: (index) {
         navigatorBar.currentIndex = index;
-        if (index == 1) {
-          navigatorBar.showDetail = false;
-        }
       },
       items: [
         FFNavigationBarItem(
