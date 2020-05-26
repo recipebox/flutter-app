@@ -3,7 +3,6 @@ import 'package:recipe_box/models/plan_ingredient_model.dart';
 import 'package:recipe_box/models/recipe_detail_model.dart';
 import 'package:recipe_box/services/firestore/plan_ingredient_service.dart';
 import 'package:recipe_box/services/firestore/plan_service.dart';
-import 'package:recipe_box/utilities/log.dart';
 import 'package:recipe_box/utilities/styles.dart';
 import 'package:provider/provider.dart';
 
@@ -59,16 +58,22 @@ class RecipeIngredientTile extends StatelessWidget {
                     if (!snapshot.hasData) return new Text('...');
                     var data = snapshot.data;
                     bool matched = false;
+                    bool done = false;
                     data.forEach((element) {
                       if (element.title == ingredient.title) {
                         matched = true;
+                        print(
+                            'match for ${element.title}, status = ${element.status}');
+                        if (element.status == 'DONE') {
+                          done = true;
+                        }
                       }
                     });
                     if (matched) {
                       return Positioned(
                         child: Icon(
                           Icons.shopping_basket,
-                          color: sColorBody5,
+                          color: done ? sColorBody5 : Colors.redAccent,
                         ),
                         bottom: 0,
                         right: 0,

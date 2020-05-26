@@ -40,7 +40,7 @@ class PlanIngredient {
       snap.data['title'] ?? '-',
       snap.data['description'] ?? '-',
       photoArray ?? [],
-      snap.data['status'] ?? 'PENDING',
+      snap.data['status'] ?? 'NOT DEFINED',
       recipes,
       amount,
       recipeTitles,

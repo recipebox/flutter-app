@@ -189,6 +189,7 @@ class PlanRecipeService {
         obj.addAll({
           "recipes": [recipeMap],
           "recipeIDs": [recipe.id],
+          "status": "NEEDED"
         });
         Firestore.instance
             .collection('profiles/$uid/plans/$planID/ingredients')

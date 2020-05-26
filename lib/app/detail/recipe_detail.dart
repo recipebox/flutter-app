@@ -182,13 +182,8 @@ class RecipeDetailNewPage extends StatelessWidget {
                   ingredient: recipeDetail.ingredients[index],
                 ),
                 onTap: () async {
-                  print(
-                      'add ingredient: ${recipeDetail.ingredients[index].title.toString()}, status: ${recipeDetail.ingredients[index].status.toString()}');
-                  recipeDetail.ingredients[index].status = "ADDED";
                   await planRecipeService.addIngredient(planID, recipeDetail,
                       recipeDetail.ingredients[index].title);
-                  print(
-                      'add ingredient: ${recipeDetail.ingredients[index].title.toString()}, status: ${recipeDetail.ingredients[index].status.toString()}');
                 },
               );
             },
