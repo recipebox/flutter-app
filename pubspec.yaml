@@ -32,6 +32,7 @@ dev_dependencies:
   ff_navigation_bar: ^0.1.5
   image_picker: ^0.6.2+3
   camera: ^0.5.7+2
+  toast: ^0.1.5
 
 flutter_icons:
   image_path: assets/logo/launch_icon.png
