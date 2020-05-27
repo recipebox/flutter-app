@@ -79,7 +79,7 @@ class PlanHomePage extends StatelessWidget {
         selectedItemBackgroundColor: Colors.green,
         selectedItemIconColor: Colors.white,
         selectedItemLabelColor: Colors.black,
-        showSelectedItemShadow: false,
+        showSelectedItemShadow: true,
         barHeight: 70,
       ),
       selectedIndex: navigatorBar.currentIndex,
