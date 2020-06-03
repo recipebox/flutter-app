@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_box/models/plan_model.dart';
+import 'package:recipe_box/utilities/log.dart';
 
 class PlanService {
   PlanService({@required this.uid}) : assert(uid != null);
@@ -10,21 +11,20 @@ class PlanService {
   Plan current;
 
   Stream<Plan> planStream() {
-    final ref = Firestore.instance
-        .collection('profiles/$uid/plans')
-        .where("active", isEqualTo: true)
-        .orderBy("created_at", descending: true)
-        .limit(1);
-
+    final ref = Firestore.instance.collection('profiles/$uid/plans');
     final plan = ref.snapshots().map((snapshot) {
       return snapshot.documents
           .map((doc) {
             final plan = Plan.fromSnapshot(doc, uid);
-            if (plan.active == true) {
+            if (plan.active == true &&
+                (this.current == null ||
+                    plan.createdAt >= this.current.createdAt)) {
+              printT(
+                  'matched condition for ...planID:${plan.id}, title:${plan.title}');
               this.current = plan;
               return plan;
             }
-            return null;
+            return this.current;
           })
           .toList()
           .first;
@@ -38,6 +38,7 @@ class PlanService {
         .orderBy("created_at", descending: true);
 
     return planCollection.snapshots().map((snapshot) {
+      printT('planListStream...........>plan has updated');
       return snapshot.documents.map((doc) {
         return Plan.fromSnapshot(doc, uid);
       }).toList();

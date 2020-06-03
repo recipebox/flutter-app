@@ -1,12 +1,12 @@
 class Secret {
   final String elsticUrl;
-  final String elsticUser;
-  final String elsticPass;
-  Secret({this.elsticUser, this.elsticPass, this.elsticUrl});
+  final String elsticKey;
+  final String elsticSecret;
+  Secret({this.elsticKey, this.elsticSecret, this.elsticUrl});
   factory Secret.fromJson(Map<String, dynamic> jsonMap) {
     return new Secret(
         elsticUrl: jsonMap["elastic_url"],
-        elsticUser: jsonMap["elastic_user"],
-        elsticPass: jsonMap["elastic_pass"]);
+        elsticKey: jsonMap["elastic_key"],
+        elsticSecret: jsonMap["elastic_secret"]);
   }
 }

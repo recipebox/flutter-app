@@ -51,7 +51,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<!-- Copied from GoogleServices-Info.plist key REVERSED_CLIENT_ID -->
-				<string>com.googleusercontent.apps.434850524499-u96gnameedf7dm0fi5u5tt5inb9616lf</string>
+				<string>com.googleusercontent.apps.649195111916-l9ggmcpqa78jktd750vjlcukfiv2qtnr</string>
 				
 				<string>fb892825494474810</string>
 			</array>
@@ -87,6 +87,6 @@
  <key>FacebookAppID</key> 
   <string>892825494474810</string> 
   <key>FacebookDisplayName</key> 
-  <string>meal nation</string>
+  <string>Recipe Box</string>
 </dict>
 </plist>
