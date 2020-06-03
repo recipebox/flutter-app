@@ -115,6 +115,11 @@ class FirebaseAuthService {
           .collection('plans')
           .add({"active": true, "created_at": now, "title": "Welcome plan"});
       printT('done for create plan' + plan.documentID);
+
+      await Firestore.instance
+          .collection('profiles')
+          .document(user.uid)
+          .updateData({'active_plan': plan.documentID});
     } else {
       printT('Loading existing profile...');
     }

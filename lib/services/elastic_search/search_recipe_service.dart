@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http_auth/http_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:recipe_box/models/recipe_detail_model.dart';
 import 'package:recipe_box/models/recipe_preview_model.dart';
 import 'package:recipe_box/services/secret_loader_service.dart';
@@ -13,14 +13,16 @@ import 'package:recipe_box/utilities/log.dart';
 class SearchRecipeService with ChangeNotifier {
   List<RecipePreviewModel> recipePreviewResult = new List<RecipePreviewModel>();
   String elsticUrl;
-  String username;
-  String password;
+  String key;
+  String secret;
 
   SearchRecipeService(recipePreviewResult) {
-    SecretLoaderService(secretPath: "secret_key.json").load().then((secret) {
-      elsticUrl = secret.elsticUrl;
-      username = secret.elsticUser;
-      password = secret.elsticPass;
+    SecretLoaderService(secretPath: "secret_key.json")
+        .load()
+        .then((authSecret) {
+      elsticUrl = authSecret.elsticUrl;
+      key = authSecret.elsticKey;
+      secret = authSecret.elsticSecret;
     });
     if (recipePreviewResult == null) {
       this.recipePreviewResult = new List<RecipePreviewModel>();
@@ -31,22 +33,26 @@ class SearchRecipeService with ChangeNotifier {
 
   Future<void> searchElastic(String keyword) async {
     printT('searchElastic...:' + keyword);
-    var client = BasicAuthClient(username, password);
+    // var client = BasicAuthClient(username, password);
     final url = elsticUrl;
     String requestBody =
         '{"query":{"multi_match":{"query":"$keyword", "fields":["tags"], "fuzziness":"AUTO"}}}';
-    Map<String, String> headers = {"Content-type": "application/json"};
+    Map<String, String> headers = {
+      "Content-type": "application/json",
+      "key": key,
+      "value": secret
+    };
 
-    await client.post(url, body: requestBody, headers: headers).then((res) {
+    await http.post(url, body: requestBody, headers: headers).then((res) {
       final responseJson = json.decode(res.body);
       final returnCount = responseJson['hits']['total']['value'];
       this.recipePreviewResult = new List<RecipePreviewModel>();
       if (returnCount > 0) {
-        //print('total > 0: ' + returnCount.toString());
+        // print('total > 0: ' + returnCount.toString());
         List searchResult = responseJson['hits']['hits'];
         searchResult.forEach((element) {
           final source = element['_source'];
-          //print('Each item source:' + source.toString());
+          // print('Each item source:' + source.toString());
           this.recipePreviewResult.add(
               RecipePreviewModel.fromElasticSearch(element['_id'], source));
         });

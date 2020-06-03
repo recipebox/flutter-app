@@ -28,8 +28,15 @@ class SettingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Underconstruction...',
-              style: Theme.of(context).textTheme.headline1,
+              'Change your profile image',
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Please wait for incoming feature...',
+              style: Theme.of(context).textTheme.headline3,
             ),
           ],
         ),
