@@ -25,6 +25,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: sColorBody1,
+            // textTheme:
+            textTheme: TextTheme(
+              headline1: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+              headline2: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              headline3: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
           ),
           home: AuthWidget(userSnapshot: userSnapshot),
         );

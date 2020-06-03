@@ -39,6 +39,7 @@ class RecipeDetailModel extends RecipePreviewModel {
             e['ingredientName'],
             "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSDsgw4IdTwfd6DVqNX31enKvTpwKKwU-7yvEf_ehbGXA0aC05b&usqp=CAU",
             e['amount'],
+            '',
             e['seq']));
       });
     }
@@ -61,8 +62,9 @@ class Ingredient {
   final String title;
   final String photo;
   final String amount;
+  String status;
   final int seq;
-  Ingredient(this.title, this.photo, this.amount, this.seq);
+  Ingredient(this.title, this.photo, this.amount, this.status, this.seq);
 }
 
 class Instruction {

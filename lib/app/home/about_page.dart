@@ -1,4 +1,5 @@
 import 'package:recipe_box/services/firebase_storage/firestore_service.dart';
+import 'package:recipe_box/utilities/styles.dart';
 import 'package:recipe_box/widgets/avatar.dart';
 import 'package:recipe_box/models/avatar_reference.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: sColorBody3,
       appBar: AppBar(
         title: Text('About'),
         bottom: PreferredSize(
@@ -24,14 +26,21 @@ class AboutPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image(
+              image: AssetImage('assets/logo/logo_black.png'),
+              width: 140.0,
+            ),
+            SizedBox(
+              height: 90,
+            ),
             Text(
-              'Delicious menu helper',
+              'Recepe Box',
               style: Theme.of(context).textTheme.headline1,
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 12),
             Text(
-              'by Espanyoh',
-              style: Theme.of(context).textTheme.headline2,
+              'Enjoy planning your next recipe',
+              style: Theme.of(context).textTheme.headline3,
             ),
           ],
         ),

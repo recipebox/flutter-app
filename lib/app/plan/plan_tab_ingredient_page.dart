@@ -31,7 +31,7 @@ class PlanIngredientPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20.0, bottom: 15.0),
               child: Text(
-                "Ingredient List",
+                "Shopping List",
                 style: TextStyle(
                     color: Colors.black54.withOpacity(0.8),
                     fontSize: 20,

@@ -94,7 +94,7 @@ class PlanRecipePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Text(
-                "Queue",
+                "Wishlist",
                 style: TextStyle(
                     color: Colors.black54.withOpacity(0.8),
                     fontSize: 20,

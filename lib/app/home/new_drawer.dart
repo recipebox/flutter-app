@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_box/app/home/about_page.dart';
-import 'package:recipe_box/app/home/setting_page.dart';
 import 'package:recipe_box/services/auth/firebase_auth_service.dart';
 import 'package:recipe_box/services/firebase_storage/firestore_service.dart';
 import 'package:recipe_box/services/firestore/plan_service.dart';
@@ -9,6 +8,7 @@ import 'package:recipe_box/widgets/avatar.dart';
 import 'package:recipe_box/models/avatar_reference.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:toast/toast.dart';
 
 class NewDrawer extends StatelessWidget {
   @override
@@ -28,13 +28,18 @@ class NewDrawer extends StatelessWidget {
                     icon: Icons.home,
                     text: 'Home',
                     context: context,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Toast.show('Coming soon..', context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    },
                   ),
                   _createDrawerItem(
                     icon: Icons.queue_play_next,
                     text: 'New plan',
                     context: context,
                     onTap: () async {
-                      FocusScope.of(context).unfocus();
+                      Navigator.of(context).pop();
                       final text = await showTextInputDialog(
                         context: context,
                         title: 'What\' the plan name?',
@@ -42,7 +47,7 @@ class NewDrawer extends StatelessWidget {
                         textFields: const [
                           DialogTextField(
                             hintText: 'Define you plan name',
-                            initialText: '...',
+                            initialText: '',
                           ),
                         ],
                       );
@@ -55,6 +60,11 @@ class NewDrawer extends StatelessWidget {
                     icon: Icons.archive,
                     text: 'Plan archive',
                     context: context,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Toast.show('Coming soon..', context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    },
                   ),
                   Divider(
                     color: Colors.white38,
@@ -64,12 +74,16 @@ class NewDrawer extends StatelessWidget {
                     text: 'Setting',
                     context: context,
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          fullscreenDialog: true,
-                          builder: (_) => SettingPage(),
-                        ),
-                      );
+                      Navigator.of(context).pop();
+                      Toast.show('Coming soon..', context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     fullscreenDialog: true,
+                      //     builder: (_) => SettingPage(),
+                      //   ),
+                      // );
                     },
                   ),
                   _createDrawerItem(
@@ -77,6 +91,7 @@ class NewDrawer extends StatelessWidget {
                     text: 'About',
                     context: context,
                     onTap: () {
+                      Navigator.of(context).pop();
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           fullscreenDialog: true,

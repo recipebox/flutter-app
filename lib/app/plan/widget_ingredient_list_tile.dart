@@ -67,7 +67,7 @@ class PlanIngredientTile extends StatelessWidget {
             ),
             Spacer(),
             Container(
-              child: status == 'ADDED'
+              child: status == 'DONE'
                   ? IconButton(
                       icon: Icon(Icons.check_box),
                       color: Colors.green[400],
@@ -77,7 +77,7 @@ class PlanIngredientTile extends StatelessWidget {
                             planService.uid,
                             planService.current.id,
                             id,
-                            "PENDING");
+                            "NEEDED");
                       },
                     )
                   : IconButton(
@@ -88,7 +88,7 @@ class PlanIngredientTile extends StatelessWidget {
                             planService.uid,
                             planService.current.id,
                             id,
-                            "ADDED");
+                            "DONE");
                       },
                     ),
             )
