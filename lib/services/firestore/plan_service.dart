@@ -11,25 +11,28 @@ class PlanService {
   Plan current;
 
   Stream<Plan> planStream() {
-    final ref = Firestore.instance.collection('profiles/$uid/plans');
-    final plan = ref.snapshots().map((snapshot) {
-      return snapshot.documents
-          .map((doc) {
-            final plan = Plan.fromSnapshot(doc, uid);
-            if (plan.active == true &&
-                (this.current == null ||
-                    plan.createdAt >= this.current.createdAt)) {
-              printT(
-                  'matched condition for ...planID:${plan.id}, title:${plan.title}');
-              this.current = plan;
-              return plan;
-            }
-            return this.current;
-          })
-          .toList()
-          .first;
+    final plan = Firestore.instance
+        .collection('profiles')
+        .document(uid)
+        .snapshots()
+        .map((snapshot) async {
+      if (snapshot.data == null || snapshot.data['active_plan'] == null) {
+        printT('not ready : first time create plan');
+        return null;
+      }
+      var activePlan = snapshot.data['active_plan'];
+      await Firestore.instance
+          .document('profiles/$uid/plans/$activePlan')
+          .get()
+          .then((doc) {
+        this.current = Plan.fromSnapshot(doc, uid);
+        return this.current;
+      });
+      return this.current;
     });
-    return plan;
+    return plan.asyncMap((a) {
+      return a.then((value) => value);
+    });
   }
 
   Stream<List<Plan>> planListStream() {
@@ -38,7 +41,7 @@ class PlanService {
         .orderBy("created_at", descending: true);
 
     return planCollection.snapshots().map((snapshot) {
-      printT('planListStream...........>plan has updated');
+      // printT('planListStream...........>plan has updated');
       return snapshot.documents.map((doc) {
         return Plan.fromSnapshot(doc, uid);
       }).toList();
@@ -46,13 +49,16 @@ class PlanService {
   }
 
   Future<void> createPlan(String title) async {
-    // Mark every plan else to active false
     var now = ((new DateTime.now()).millisecondsSinceEpoch / 1000).round();
     var plan = await Firestore.instance
         .collection('profiles')
         .document(uid)
         .collection('plans')
         .add({"active": true, "created_at": now, "title": title});
-    print('done for create plan' + plan.documentID);
+    // print('done for create plan: ' + plan.documentID);
+    await Firestore.instance
+        .collection('profiles')
+        .document(uid)
+        .updateData({'active_plan': plan.documentID});
   }
 }
